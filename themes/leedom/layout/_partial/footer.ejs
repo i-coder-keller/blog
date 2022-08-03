@@ -1,0 +1,14 @@
+<div class="footer">
+  <% for(let item of theme.footer){ %>
+    <div class="footer-more">
+      <% if (item.path) { %>
+        <a href="<%- item.path %>"><%- item.name %></a>
+      <% } else { %>
+        <%- item.name %>
+      <% } %>  
+    </div>
+  <% } %>
+  <div class="footer-more">
+      <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral">本网站由<img src="https://image.liuyongzhi.cn/images/upyun.png">提供CDN加速/云存储服务</a>
+  </div>
+</div>
