@@ -11,7 +11,7 @@
   
   <title>
     
-      Archives 
+      call、bind和aplly 
       
       
     
@@ -33,6 +33,10 @@
 
 
   
+
+  
+    
+<link rel="stylesheet" href="/css/post.css">
 
   
 
@@ -70,57 +74,51 @@
 
 
       <div class="main">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2022</span>
-          </h2>
-        </div>
-      
-      <div class="post-item" title="webpack多入口打包环境搭建">
-        <div class="time-m-d">07-27</div>
-        <div class="title">
-          <a href="/2022/07/27/webpack-multiple-entry/">
-            
-              <span>webpack多入口打包环境搭建</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="call、bind和aplly">
-        <div class="time-m-d">07-26</div>
-        <div class="title">
-          <a href="/2022/07/26/call-bind-apply/">
-            
-              <span>call、bind和aplly</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="call、bind和aplly">
-        <div class="time-m-d">07-26</div>
-        <div class="title">
-          <a href="/2022/07/26/deepClone/">
-            
-              <span>call、bind和aplly</span>
-            
-          </a>
-        </div>
-      </div>
-    
+<div class="post">
+  <h3 class="date">
+    Jul 26, 2022
+  </h3>
+  <h1>
+    call、bind和aplly
+  </h1>
+  <div class="content markdown-body">
+    <p>在javascript中变量存储的的引用数据类型并不是源数据，而是数据指针地址，当进行变量接收数据时接收的实际是指针地址，所以当我们修改新变量时，旧变量的属性也会随之改变</p>
+<p><img src="https://image.liuyongzhi.cn/images/deepClone-init.png"></p>
+<p>当然理想状态是两个变量是相对独立的，这就需求我们进行手动的深拷贝。所谓深拷贝就是找到数据每个节点，如果为基础数据类型就直接赋值，反之为引用数据类型就是继续寻找基础数据类型节点，直到没有更多节点。</p>
+<h3 id="Array-和-Object"><a href="#Array-和-Object" class="headerlink" title="Array 和 Object"></a>Array 和 Object</h3><p><img src="https://image.liuyongzhi.cn/images/deepClone-Array%3AObject.png"></p>
+<p>进入函数先进行判断入参是否是一个Object或Array，如果不是目标值则直接返回，反之则根据目标值类型初始化返回值。使用<code>for...in</code>来循环目标函数拿到枚举的Key值，因为不需要去关注和拷贝源数据原型的属性，所以使用 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty">hasOwnProperty</a> 进行过滤。再进行递归循环进行赋值</p>
+<h3 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h3><p>上面版本的函数基本可以处理大部分的场景，但是如果源数据中存在循环引用的情况，那么就会导致函数调用栈爆栈的异常。例如：</p>
+<p><img src="https://image.liuyongzhi.cn/images/deepClone-Maximum.png"></p>
+<p>对于循环引用可以使用<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/WeakMap"><code>WeakMap</code></a>或<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Map"><code>Map</code></a>，由于<code>WeakMap</code>是弱引用更利于垃圾回收，性能更好，所以此处使用<code>WeakMap</code>进行处理。远离就是当函数开始时如果是引用数据类型，那么就需要先去<code>WeakMap</code>中查询，如果已经存在那么就直接返回当前结果，反之没有的话，就在<code>WeakMap</code>中以当前克隆对象作为<code>Key</code>，当前值作为值保存</p>
+<p><img src="https://image.liuyongzhi.cn/images/deepCLone-latest.png"></p>
+<p><img src="https://image.liuyongzhi.cn/images/deepClone-result.png"></p>
+<p>经过<code>WeakMap</code>改良过后的函数就可以解决循环引用的问题，主要是利用递归循环增加判断使在赋值的时候，复制的一定是值拷贝，而不是指针拷贝</p>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">deepClone</span> = (<span class="params">origin, map = <span class="keyword">new</span> <span class="built_in">WeakMap</span>()</span>) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> origin !== <span class="string">&#x27;object&#x27;</span>||origin === <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> origin</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (map.<span class="title function_">get</span>(origin)) <span class="keyword">return</span> map.<span class="title function_">get</span>(origin)</span><br><span class="line">            <span class="keyword">const</span> result = <span class="title class_">Array</span>.<span class="title function_">isArray</span>(origin) ? [] : &#123;&#125;</span><br><span class="line">            map.<span class="title function_">set</span>(origin, result)</span><br><span class="line">            <span class="keyword">for</span>(key <span class="keyword">in</span> origin) &#123;</span><br><span class="line">                <span class="keyword">if</span> (origin.<span class="title function_">hasOwnProperty</span>(key)) &#123;</span><br><span class="line">                    result[key] = <span class="title function_">deepClone</span>(origin[key], map)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+
   </div>
+  
+    
+        
+          <a id="newer" class="blog-nav" href="/2022/07/26/call-bind-apply/">&lt;&nbsp;NEWER</a>
+          
+            
 </div>
-
         <div class="footer">
   
     <div class="footer-more">
