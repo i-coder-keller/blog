@@ -1,4 +1,5 @@
 const shell = require('shelljs')
+const fetch = require('node-fetch')
 shell.cd('public')
 shell.exec('git init')
 shell.exec('git add .')
@@ -8,3 +9,4 @@ shell.exec('git remote add origin git@github.com:ALittleSuperman/blog-static.git
 shell.exec('git push -u --force origin master')
 shell.rm('-rf', '.git/')
 shell.exit()
+fetch('http://api.liuyongzhi.cn/deploy/blog-static')
