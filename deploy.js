@@ -1,5 +1,4 @@
 const shell = require('shelljs')
-const fetch = require('node-fetch')
 shell.cd('public')
 shell.exec('git init')
 shell.exec('git add .')

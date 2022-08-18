@@ -1,6 +1,6 @@
 ---
 title: webpack多入口打包环境搭建
-date: 2022-07-27 23:23
+date: 2022-07-28 23:23
 ---
 创建一个新目录执行 `npm init -y`，生成 `package.json`。
 
