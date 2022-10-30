@@ -16,7 +16,7 @@ favicon:
 
 # 用户头像与昵称
 avatar:
-  author_photo: /images/avatar.png
+  author_photo: /images/favicon.png
   author_nickname: Keller
   path: /
 
