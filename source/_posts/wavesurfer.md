@@ -7,7 +7,7 @@ date: 2022-10-30 10:00
 
 ![](https://image.liuyongzhi.cn/imageswavesurfer-js.png)
 
-## 什么是[wavesurfer-js]([https://wavesurfer-js.org/](https://wavesurfer-js.org/)?
+## 什么是[wavesurfer-js](https://wavesurfer-js.org/)?
 
 > **wavesurfer.js** is a customizable audio waveform visualization, built on top of [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) and [HTML5 Canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).
 
